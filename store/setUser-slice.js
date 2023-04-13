@@ -6,7 +6,8 @@ const setUserSlice = createSlice({
         user: {},
         authenticated: false,
         userList: [],
-        error: false
+        error: false,
+        otp: ''
     },
     reducers: {
         addUser(state, action) {
@@ -26,6 +27,9 @@ const setUserSlice = createSlice({
         },
         setErrorFalse(state) {
             state.error = false
+        },
+        setOTP(state, action) {
+            state.otp = action.payload
         }
     }
 })

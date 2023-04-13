@@ -9,36 +9,18 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
-export const logInUser = async (email, router, setError) => {
-
-    console.log(email);
-
-  // const data = await fetch("http://172.232.70.228:8080/api/gql", {
-  //   method: 'POST',
-  //   headers: {"Content-Type": 'application/json'},
-  //   body: JSON.stringify({
-  //     query: `
-  //     mutation{
-  //       generateOTP(input:{
-  //         email : "superadmin@example.com"
-  //       })
-  //     }
-  //     `
-  //   })
-  // })
-
-  // const result = await data.json()
-  // const jsonData = await data.json();
+export const logInUser = async (email, router, setError, setOtp) => {
+  console.log(email)
 
   try {
-    const response = await fetch("http://172.232.70.228:8080/api/gql", {
+    const response = await fetch("http://172.232.70.228:8080/api/gql/query", {
       method: 'POST',
       headers: {"Content-Type": 'application/json'},
       body: JSON.stringify({
         query: `
         mutation{
           generateOTP(input:{
-            email : "superadmin@example.com"
+            email : "${email}"
           })
         }
         `
@@ -47,22 +29,9 @@ export const logInUser = async (email, router, setError) => {
     console.log(response)
 
     const data = await response.json()
-    console.log(data);
+    alert(`Your OTP is : ${data.data.generateOTP}`);
+    setOtp(data.data.generateOTP)
 
-  //   // if (data.message === "success") {
-  //   //   store.dispatch(setAuthentication());
-  //   // }
-
-  //   // await setLoginUser(setError)
-  //   //   .then((data) => store.dispatch(addUser(data)))
-  //   //   .then(() => {
-  //   //     router.push("/profile");
-  //   //   })
-  //   //   .catch((error) => {
-  //   //     // console.log(error);
-  //   //     setError(true);
-  //   //     setTimeout(() => setError(false), 2000);
-  //   //   });
   } catch (error) {
     console.log(error);
     setError(true);
@@ -94,5 +63,33 @@ export const fetchData = async () => {
     store.dispatch(addData(data));
   } catch (error) {
     alert(error);
+  }
+};
+
+const handleLogin = async () => {
+  try {
+    const response = await axios.post("http://172.232.70.228:8080/api/gql/query", {
+      query: `
+        mutation {
+          login(input: {
+            email: "${email}", 
+            phone: "${phone}",
+            otp: "${otp}"
+          })
+        }
+      `,
+    });
+
+    // Handle the response and store the token in localStorage or a global state management library
+    const { success, token } = response.data.data.login;
+    if (success) {
+      console.log('Logged in with token:', token);
+      // Redirect to the listing page
+      // e.g., Router.push('/users');
+    } else {
+      console.error('Failed to login:', response.data.errors);
+    }
+  } catch (err) {
+    console.error('Failed to login:', err);
   }
 };
