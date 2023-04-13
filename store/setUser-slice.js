@@ -12,7 +12,7 @@ const setUserSlice = createSlice({
     reducers: {
         addUser(state, action) {
             state.user = action.payload
-            // console.log(state.user)
+            console.log(state.user)
         },
         addData(state, action) {
             state.userList = action.payload

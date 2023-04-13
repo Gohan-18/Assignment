@@ -3,21 +3,34 @@
 // http://172.232.70.228:8080/api/gql
 
 import React, { useEffect, useState } from "react";
-import { logInUser, setLoginUser } from "@/utils/fetchingFunctions";
+import { getOTP, handleLogin, setLoginUser } from "@/utils/fetchingFunctions";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { addUser } from "@/store/setUser-slice";
+import store from "@/store/store";
 
 const inputForm = () => {
   const router = useRouter();
   const [error, setError] = useState(false);
   const [otp, setOtp] = useState("");
   const [email, setEmail] = useState("superadmin@example.com");
+  const [phone, setPhone] = useState("");
+  // const dispatch = useDispatch();
   // console.log(email)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     // const { email } = e.target;
     // console.log(userName.value);
-    await logInUser(email, router, setError, setOtp);
+    // await logInUser(email, router, setError, setOtp);
+
+    if (otp) {
+      console.log("NOW LOGIN REQUEST");
+      const userSet = await handleLogin(email, otp);
+      store.dispatch(addUser(userSet))
+    } else {
+      await getOTP(email, router, setError, setOtp);
+    }
   };
 
   return (
@@ -33,10 +46,10 @@ const inputForm = () => {
             Email Id
           </label> */}
           <input
-          // required
-          placeholder="Enter Your Email Id"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+            // required
+            placeholder="Enter Your Email Id"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             autoComplete="off"
             id="email"
             name="email"
@@ -56,10 +69,10 @@ const inputForm = () => {
             Email Id
           </label> */}
           <input
-          required
-          disabled
-          value={email}
-          onChange={(e) => e.target.value = email}
+            required
+            disabled
+            value={email}
+            onChange={(e) => (e.target.value = email)}
             placeholder="Enter Your Email Id"
             autoComplete="off"
             id="email"
@@ -68,9 +81,9 @@ const inputForm = () => {
             className=" outline-none bg-transparent border-2 text-sm rounded-md text-white px-2 py-2 text-center leading-none w-full"
           />
           <input
-          required
-          defaultValue={otp}
-          onChange={(e) => setOtp(e.target.value)}
+            required
+            defaultValue={otp}
+            onChange={(e) => setOtp(e.target.value)}
             placeholder="OTP"
             autoComplete="off"
             id="otp"
@@ -78,17 +91,17 @@ const inputForm = () => {
             type="text"
             className=" outline-none bg-transparent border-2 text-sm rounded-md text-white px-2 py-2 text-center leading-none w-full"
           />
-          <input
-          required
-          // defaultValue={otp}
-          // onChange={() => }
+          {/* <input
+            required
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
             placeholder="Phone"
             autoComplete="off"
             id="phone"
             name="phone"
             type="number"
             className=" outline-none bg-transparent border-2 text-sm rounded-md text-white px-2 py-2 text-center leading-none w-full"
-          />
+          /> */}
           <button
             type="submit"
             className="bg-indigo-400 text-white py-2 rounded-md text-xs text-center w-full border-2 border-indigo-400 hover:bg-indigo-700 transition-all duration-200"
