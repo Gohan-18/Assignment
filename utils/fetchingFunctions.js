@@ -1,76 +1,7 @@
 import { addData, addUser, setAuthentication } from "@/store/setUser-slice";
 import store from "@/store/store";
-import axios from "axios";
 
-// query {
-// 	users(search: {
-//     filter: All
-//   }){
-//     users{id,firstName,lastName, email, phone,isFinal, isArchived,createdAt,updatedAt},
-//     total
-//   }
-// }
-
-// const search = {
-//   search: "",    // Update with the appropriate search value
-//   filter: "ALL", // Update with the appropriate filter value
-//   sortBy: "ALPHABETICAL" // Update with the appropriate sortBy value
-// };
-
-// const roleID = "your_role_id"; // Replace with the actual role ID value
-
-// // Define your GraphQL query
-const query = `
-  query {
-    users(search: {
-      filter: All
-    }){
-      users{id,firstName,lastName, email, phone,isFinal, isArchived,createdAt,updatedAt},
-      total
-    }
-  }
-`;
-
-// // Set the variables for the query
-// const variables = {
-//   search,
-//   roleID
-// };
-
-// // Make a GraphQL request using the Fetch API
-// fetch("https://api.example.com/graphql", {
-//   method: "POST",
-//   headers: {
-//     "Content-Type": "application/json"
-//   },
-//   body: JSON.stringify({
-//     query,
-//     variables
-//   })
-// })
-// .then(response => {
-//   // Check if the response was successful
-//   if (response.ok) {
-//     // Parse the response data as JSON
-//     return response.json();
-//   } else {
-//     // Handle the error response
-//     throw new Error(`API request failed with status code ${response.status}`);
-//   }
-// })
-// .then(data => {
-//   // Process the response data
-//   console.log(data);
-// })
-// .catch(error => {
-//   // Handle any errors that occurred during the GraphQL request
-//   console.error(error);
-// });
-
-// axios.defaults.withCredentials = true;
-
-export const getOTP = async (email, router, setError, setOtp) => {
-  console.log(email);
+export const getOTP = async (email, setError, setOtp) => {
 
   try {
     const response = await fetch("http://172.232.70.228:8080/api/gql/query", {
@@ -121,10 +52,8 @@ export const handleLogin = async (email, otp, router) => {
       `,
       }),
     });
-    // console.log(response)
     const { data } = await response.json();
 
-    // console.log(data?.login);
     store.dispatch(addUser(data?.login))
 
     if(data?.login?.sessionToken) {

@@ -18,7 +18,7 @@ const setUserSlice = createSlice({
             state.userList = action.payload
             console.log(state.userList)
         },
-        setAuthentication(state, action) {
+        setAuthentication(state) {
             state.authenticated = true
             console.log(state.authenticated)
         },

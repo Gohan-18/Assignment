@@ -1,35 +1,23 @@
 "use client";
 
-// http://172.232.70.228:8080/api/gql
-
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { getOTP, handleLogin, setLoginUser } from "@/utils/fetchingFunctions";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { addUser } from "@/store/setUser-slice";
-import store from "@/store/store";
 
 const inputForm = () => {
   const router = useRouter();
   const [error, setError] = useState(false);
   const [otp, setOtp] = useState("");
   const [email, setEmail] = useState("superadmin@example.com");
-  const [phone, setPhone] = useState("");
-  // const dispatch = useDispatch();
-  // console.log(email)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // const { email } = e.target;
-    // console.log(userName.value);
-    // await logInUser(email, router, setError, setOtp);
 
     if (otp) {
       console.log("NOW LOGIN REQUEST");
       await handleLogin(email, otp, router);
-      // store.dispatch(addUser(userSet))
     } else {
-      await getOTP(email, router, setError, setOtp);
+      await getOTP(email, setError, setOtp);
     }
   };
 
@@ -42,11 +30,8 @@ const inputForm = () => {
 
       {!otp ? (
         <>
-          {/* <label className="text-white " htmlFor="userName">
-            Email Id
-          </label> */}
           <input
-            // required
+            required
             placeholder="Enter Your Email Id"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -65,9 +50,6 @@ const inputForm = () => {
         </>
       ) : (
         <>
-          {/* <label className="text-white " htmlFor="userName">
-            Email Id
-          </label> */}
           <input
             required
             disabled
@@ -91,17 +73,6 @@ const inputForm = () => {
             type="text"
             className=" outline-none bg-transparent border-2 text-sm rounded-md text-white px-2 py-2 text-center leading-none w-full"
           />
-          {/* <input
-            required
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder="Phone"
-            autoComplete="off"
-            id="phone"
-            name="phone"
-            type="number"
-            className=" outline-none bg-transparent border-2 text-sm rounded-md text-white px-2 py-2 text-center leading-none w-full"
-          /> */}
           <button
             type="submit"
             className="bg-indigo-400 text-white py-2 rounded-md text-xs text-center w-full border-2 border-indigo-400 hover:bg-indigo-700 transition-all duration-200"
@@ -116,7 +87,7 @@ const inputForm = () => {
           error ? ` opacity-100` : ` opacity-0`
         } `}
       >
-        Please check your username and password!!
+        Please check your Email and/or OTP!!
       </span>
     </form>
   );
