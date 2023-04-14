@@ -26,8 +26,8 @@ const inputForm = () => {
 
     if (otp) {
       console.log("NOW LOGIN REQUEST");
-      const userSet = await handleLogin(email, otp);
-      store.dispatch(addUser(userSet))
+      await handleLogin(email, otp, router);
+      // store.dispatch(addUser(userSet))
     } else {
       await getOTP(email, router, setError, setOtp);
     }

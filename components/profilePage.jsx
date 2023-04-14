@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
-import { fetchData } from "@/utils/fetchingFunctions";
 import { DataGrid } from "@mui/x-data-grid";
 import {
   Box,
@@ -20,22 +19,22 @@ const profilePage = () => {
 
   const columns = [
     {
-      field: "first_name",
+      field: "firstName",
       headerName: "First name",
       width: 150,
       editable: true,
     },
     {
-      field: "last_name",
+      field: "lastName",
       headerName: "Last name",
       width: 150,
       editable: true,
     },
     {
-      field: "gender",
-      headerName: "Gender",
+      field: "phone",
+      headerName: "Phone",
       type: "number",
-      width: 110,
+      width: 150,
       editable: true,
     },
     {
@@ -49,16 +48,14 @@ const profilePage = () => {
   let filteredUserList = searchedTerm.length
     ? userList?.filter(
         (list) =>
-          list?.first_name.toLowerCase().includes(searchedTerm.toLowerCase()) ||
-          list?.last_name.toLowerCase().includes(searchedTerm.toLowerCase())
+          list?.firstName.toLowerCase().includes(searchedTerm.toLowerCase()) ||
+          list?.lastName.toLowerCase().includes(searchedTerm.toLowerCase())
       )
     : userList;
 
   useEffect(() => {
     if (!authenticated) {
       router.push("/");
-    } else {
-      fetchData();
     }
   }, []);
 
@@ -105,10 +102,10 @@ const profilePage = () => {
             <Typography
               sx={{ fontWeight: 700, fontSize: "25px", color: "#f4f4f4" }}
             >
-              Graphic Designer
+              KernelPi
             </Typography>
           </Box>
-          <Box sx={{ width: "100%", height: "750px", my: "80px" }}>
+          <Box sx={{ width: "100%", height: "650px", my: "80px" }}>
             <TextField
               sx={{ mb: "20px" }}
               size="small"

@@ -16,10 +16,11 @@ const setUserSlice = createSlice({
         },
         addData(state, action) {
             state.userList = action.payload
-            // console.log(state.userList)
+            console.log(state.userList)
         },
         setAuthentication(state, action) {
             state.authenticated = true
+            console.log(state.authenticated)
         },
         setErrorTrue(state) {
             state.error = true
