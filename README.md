@@ -4,9 +4,19 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+First, fork the project to your GitHub account.
+
+Then clone it to your local machine.
+
+Open editor of your choice and navigate to root of the project (i.e. Assignment)
+
+Open terminal and run these commands :
 
 ```bash
+#To install the required dependencies
+npm install 
+
+#To run the code in local machine
 npm run dev
 # or
 yarn dev
