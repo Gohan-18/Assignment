@@ -2,7 +2,7 @@ import './globals.css';
 
 export const metadata = {
   title: 'Assignment',
-  description: 'Find jobs quickely',
+  description: 'KernelPi - Assignment',
 }
 
 export default function RootLayout({ children }) {

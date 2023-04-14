@@ -2,7 +2,6 @@ import { addData, addUser, setAuthentication } from "@/store/setUser-slice";
 import store from "@/store/store";
 
 export const getOTP = async (email, setError, setOtp) => {
-
   try {
     const response = await fetch("http://172.232.70.228:8080/api/gql/query", {
       method: "POST",
@@ -17,7 +16,6 @@ export const getOTP = async (email, setError, setOtp) => {
         `,
       }),
     });
-    console.log(response);
 
     const data = await response.json();
     alert(`Your OTP is : ${data.data.generateOTP}`);
@@ -29,40 +27,63 @@ export const getOTP = async (email, setError, setOtp) => {
   }
 };
 
-export const handleLogin = async (email, otp, router) => {
-  try {
-    const response = await fetch("http://172.232.70.228:8080/api/gql/query", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        query: `
-        mutation {
-          login(input: {
-            email : "${email}",
-            otp : "${otp}"
-          }),{
-            id,
-            name,
-            isAdmin,
-            orgUID,
-            roleID,
-            sessionToken
-          }
-        }
-      `,
-      }),
-    });
-    const { data } = await response.json();
+export const handleLogin = async (email, otp, router, setError) => {
 
-    store.dispatch(addUser(data?.login))
-
-    if(data?.login?.sessionToken) {
-      store.dispatch(setAuthentication());
-      await fetchData(data?.login?.sessionToken, router)
-    }
-  } catch (err) {
-    console.error("Failed to login:", err);
+  if(otp.length !== 5) {
+    setError(true);
+    setTimeout(() => setError(false), 2000);
   }
+  else {
+    try {
+      const response = await fetch("http://172.232.70.228:8080/api/gql/query", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          query: `
+          mutation {
+            login(input: {
+              email : "${email}",
+              otp : "${otp}"
+            }),{
+              id,
+              name,
+              isAdmin,
+              orgUID,
+              roleID,
+              sessionToken
+            }
+          }
+        `,
+        }),
+      });
+
+      const { data } = await response.json();
+
+      if(data === null) {
+        setError(true);
+        setTimeout(() => setError(false), 2000);
+      }
+      else {
+        store.dispatch(addUser(data?.login))
+  
+        if(data?.login?.sessionToken) {
+          store.dispatch(setAuthentication());
+          await fetchData(data?.login?.sessionToken, router)
+        }
+      }
+  
+      // store.dispatch(addUser(data?.login))
+  
+      // if(data?.login?.sessionToken) {
+      //   store.dispatch(setAuthentication());
+      //   await fetchData(data?.login?.sessionToken, router)
+      // }
+    } catch (err) {
+      console.error("Failed to login:", err);
+    }
+  }
+
+ 
 };
 
 export const fetchData = async (sessionToken, router) => {
@@ -110,6 +131,6 @@ export const fetchData = async (sessionToken, router) => {
     }
 
   } catch (error) {
-    console.log(error);
+    alert(error);
   }
 };

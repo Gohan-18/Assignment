@@ -14,8 +14,7 @@ const inputForm = () => {
     e.preventDefault();
 
     if (otp) {
-      console.log("NOW LOGIN REQUEST");
-      await handleLogin(email, otp, router);
+      await handleLogin(email, otp, router, setError);
     } else {
       await getOTP(email, setError, setOtp);
     }
@@ -87,7 +86,7 @@ const inputForm = () => {
           error ? ` opacity-100` : ` opacity-0`
         } `}
       >
-        Please check your Email and/or OTP!!
+        Please check if Email and OTP are correct!!
       </span>
     </form>
   );

@@ -33,7 +33,6 @@ const profilePage = () => {
     {
       field: "phone",
       headerName: "Phone",
-      type: "number",
       width: 150,
       editable: true,
     },
@@ -105,7 +104,7 @@ const profilePage = () => {
               KernelPi
             </Typography>
           </Box>
-          <Box sx={{ width: "100%", height: "650px", my: "80px" }}>
+          <Box sx={{ width: "100%", height: "600px", my: "80px" }}>
             <TextField
               sx={{ mb: "20px" }}
               size="small"
